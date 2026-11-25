@@ -10,6 +10,7 @@ calc.py: small, testable calculations shared by the Streamlit app, the memo and 
 from math import ceil, sqrt
 from statistics import NormalDist
 
+import numpy as np
 import pandas as pd
 
 
@@ -26,8 +27,11 @@ def opportunity_direct_refi(leak: pd.DataFrame, assumptions: pd.DataFrame, share
     a = _assump(assumptions)
     rows = []
     for purpose in ["refinance", "cash_out_refi"]:
-        d = leak[(leak.purpose_label == purpose) & (leak.channel_label == "direct")].iloc[0]
-        i = leak[(leak.purpose_label == purpose) & (leak.channel_label == "indirect")].iloc[0]
+        d_rows = leak[(leak.purpose_label == purpose) & (leak.channel_label == "direct")]
+        i_rows = leak[(leak.purpose_label == purpose) & (leak.channel_label == "indirect")]
+        if d_rows.empty or i_rows.empty:  # a small state may have no broker refinances to compare with
+            continue
+        d, i = d_rows.iloc[0], i_rows.iloc[0]
         d_rate, i_rate = d.incomplete / d.apps, i.incomplete / i.apps
         gap_files = max(d_rate - i_rate, 0) * d.apps
         recovered = gap_files * share_closed
@@ -38,7 +42,9 @@ def opportunity_direct_refi(leak: pd.DataFrame, assumptions: pd.DataFrame, share
             "indirect_incomplete_pct": 100 * i_rate, "gap_files": gap_files, "recovered_files": recovered,
             "funded_loans": funded, "volume": volume, "revenue": volume * bps / 10000,
         })
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=[
+        "purpose", "direct_apps", "direct_incomplete_pct", "indirect_incomplete_pct", "gap_files",
+        "recovered_files", "funded_loans", "volume", "revenue"])
 
 
 def opportunity_lender_gap(lenders: pd.DataFrame, assumptions: pd.DataFrame, share_closed: float, bps: float,
@@ -52,6 +58,26 @@ def opportunity_lender_gap(lenders: pd.DataFrame, assumptions: pd.DataFrame, sha
     volume = funded * a["med_loan_all"]
     return {"lenders": len(flagged), "excess_walkaways": excess, "recovered_files": recovered,
             "funded_loans": funded, "volume": volume, "revenue": volume * bps / 10000}
+
+
+def eb_shrink(obs, exp, var) -> dict:
+    """Empirical-Bayes (DerSimonian-Laird) view of lender O/E.
+
+    y_i = obs/exp is each lender's observed-to-expected ratio and s_i^2 = var/exp^2 is its sampling variance if the lender
+    were exactly as expected. tau is the standard deviation of the TRUE O/E across lenders (what is left after chance is
+    removed); shrunk_i pulls each noisy O/E toward the precision-weighted mean in proportion to how noisy it is.
+    """
+    obs, exp, var = (np.asarray(a, dtype=float) for a in (obs, exp, var))
+    y = obs / exp
+    s2 = var / exp**2
+    w = 1 / s2
+    k = len(y)
+    ybar = float((w * y).sum() / w.sum())
+    Q = float((w * (y - ybar) ** 2).sum())
+    c = float(w.sum() - (w**2).sum() / w.sum())
+    tau2 = max(0.0, (Q - (k - 1)) / c) if k > 1 else 0.0
+    B = tau2 / (tau2 + s2)
+    return {"tau": sqrt(tau2), "ybar": ybar, "Q_ratio": Q / max(k - 1, 1), "weight": B, "shrunk": ybar + B * (y - ybar), "y": y}
 
 
 def sample_size_per_arm(p_control: float, p_treatment: float, alpha: float = 0.05, power: float = 0.80) -> int:
@@ -75,3 +101,8 @@ def selfcheck(leak: pd.DataFrame, assumptions: pd.DataFrame, lenders: pd.DataFra
     # textbook check: 10% vs 12%, alpha .05, power .8 -> about 3,840 per arm
     assert 3800 <= sample_size_per_arm(0.10, 0.12) <= 3900
     assert sample_size_per_arm(0.10, 0.14) < sample_size_per_arm(0.10, 0.12), "larger effect needs fewer files"
+    # shrinkage: lenders exactly as expected -> no true spread; real spread -> noisy lenders shrink more than precise ones
+    flat = eb_shrink([100, 200, 300], [100, 200, 300], [90, 180, 270])
+    assert flat["tau"] == 0 and np.allclose(flat["shrunk"], 1.0)
+    spread = eb_shrink([150, 300, 1500, 10_000], [100, 200, 1000, 10_000], [90, 180, 900, 9_000])
+    assert spread["tau"] > 0 and spread["weight"][0] < spread["weight"][3], "less precise lenders must shrink more"

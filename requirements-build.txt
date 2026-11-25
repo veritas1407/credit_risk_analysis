@@ -1,4 +1,6 @@
-# Only needed to rebuild data/ from the cleaned parquet (not for the deployed app)
+# Only needed to rebuild data/ from the raw HMDA files (not for the deployed app)
 duckdb>=1.0
 pandas>=2
+numpy>=1.26
 pyarrow
+scikit-learn>=1.4

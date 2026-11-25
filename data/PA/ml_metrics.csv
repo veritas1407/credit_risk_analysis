@@ -1,0 +1,4 @@
+model,n,base_rate,auc_segment,auc_model,logloss_gain_segment_pct,logloss_gain_model_pct
+Walk-away,199706,0.2134,0.6017,0.6322,2.9826,3.2795
+Denial,199706,0.1218,0.6976,0.764,7.8828,14.1064
+Walk-away + channel,199706,0.2134,0.6017,0.6419,2.9826,3.8015

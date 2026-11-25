@@ -1,0 +1,40 @@
+loan_type,code,reason,denials
+1,1,Debt-to-income ratio,4459
+1,2,Employment history,190
+1,3,Credit history,2857
+1,4,Collateral,2199
+1,5,Insufficient cash,409
+1,6,Unverifiable information,569
+1,7,Credit application incomplete,1796
+1,8,Mortgage insurance denied,13
+1,9,Other,1040
+1,NA,Not reported,332
+2,1,Debt-to-income ratio,1622
+2,2,Employment history,146
+2,3,Credit history,1558
+2,4,Collateral,1597
+2,5,Insufficient cash,408
+2,6,Unverifiable information,354
+2,7,Credit application incomplete,1579
+2,8,Mortgage insurance denied,2
+2,9,Other,557
+2,NA,Not reported,4
+3,1,Debt-to-income ratio,455
+3,2,Employment history,31
+3,3,Credit history,863
+3,4,Collateral,333
+3,5,Insufficient cash,44
+3,6,Unverifiable information,75
+3,7,Credit application incomplete,357
+3,8,Mortgage insurance denied,3
+3,9,Other,318
+3,NA,Not reported,3
+4,1,Debt-to-income ratio,49
+4,2,Employment history,10
+4,3,Credit history,14
+4,4,Collateral,19
+4,5,Insufficient cash,6
+4,6,Unverifiable information,9
+4,7,Credit application incomplete,10
+4,9,Other,38
+4,NA,Not reported,1

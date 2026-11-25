@@ -180,6 +180,14 @@ def clean_select(state, year):
         "aus-1" AS aus,
         preapproval,
 
+        -- Application-time fields used by the ML case-mix model (build_ml.py)
+        TRY_CAST(loan_term AS DOUBLE) AS loan_term,
+        TRY_CAST(total_units AS INTEGER) AS total_units,
+        conforming_loan_limit,
+        "open-end_line_of_credit" AS open_end,
+        reverse_mortgage,
+        TRY_CAST(tract_to_msa_income_percentage AS DOUBLE) AS tract_income_pct,
+
         -- 10 = no denial reason; 1111 = exempt
         NULLIF(
             NULLIF("denial_reason-1", '10'),

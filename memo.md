@@ -1,6 +1,6 @@
 # Product memo: stop losing refinance applicants to unfinished files
 
-**To:** Head of Product, digital mortgage lender  **From:** Product analytics  **Data:** HMDA 2024, Maryland (118,431 applications)
+**To:** Head of Product, digital mortgage lender  **From:** Product analytics  **Data:** HMDA 2024, Maryland (118,431 applications) and five neighbouring states (553,213 in total)
 **Decision requested:** approve a controlled test of a *file-completion assistant* for direct-channel refinance applications.
 
 ## 1. The problem
@@ -27,6 +27,11 @@ Raw walk-away rankings mislead, because refinance-heavy lenders lose more applic
 its own loan mix predicts (observed ÷ expected). 36 of 111 lenders lose significantly more applicants than their mix predicts; 44
 significantly fewer. On the walk-away-versus-denial frontier, only 4 of 7 lenders are on both the raw and the mix-adjusted frontier,
 and 5 of 7 survive adding income to the adjustment. The best lenders do not charge more (median rate spread 0.18 vs 0.16 points).
+
+**Does it generalise, and can a model explain it?** The direct-refinance leak replicates in Virginia, Pennsylvania, Delaware, D.C. and West
+Virginia (direct refinances close incomplete at 9.3–12.2%, brokered 3.3–6.1%, direct purchases 1.5–1.8%; 63–75% of all stalled files). A gradient-boosted
+model on 13 application-time fields predicts walk-away barely better than loan purpose and type alone (AUC about 0.6), and does not shrink the real
+spread between lenders (τ about 0.4). So walk-away is driven by what happens *after* applying, not by who applies: offer the fix to everyone, do not score.
 
 ## 4. Why this intervention (and not the alternatives)
 
@@ -56,13 +61,13 @@ and 5 of 7 survive adding income to the adjustment. The best lenders do not char
 
 - Brokers pre-screen applicants, so the direct-versus-broker gap overstates what a product can recover.
 - HMDA has no credit score, no timestamps and no reason for withdrawal; the test should capture *why* files stall.
-- One state and one year. Replicate on neighbouring states before sizing nationally.
+- Six neighbouring states and one year. The leak replicates, but the states share regulators and lenders; confirm on a distant region before sizing nationally.
 - Fair lending: the intervention must be offered identically to all applicants and must not alter underwriting; monitor outcomes by protected class under the lender's compliance process (not analysed here).
 
 ## 8. Next steps
 
 1. Instrument the stall: log which document and which step each stalled file waits on (2 weeks).
 2. Run the test described above (about 8 weeks at 400 eligible applications a week).
-3. Re-run the lender comparison on 2023 and 2025 HMDA to see whether the frontier is stable.
+3. Re-run the lender comparison on 2023 and 2025 HMDA to see whether the frontier is stable, and rebuild the walk-away model on the lender's own data (credit score, timestamps) to see how much more predictable it is.
 
 *Descriptive analysis of public HMDA data; makes no claim about any lender's practices. Interactive version: `streamlit run app.py`.*

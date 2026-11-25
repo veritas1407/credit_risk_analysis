@@ -105,3 +105,39 @@
 **Interpretation:** The opportunity is large enough to justify a controlled test, and the proximal metric (incomplete files) needs a quarter of the sample the funded rate needs.
 
 **Limitation:** The estimates assume recovered files behave like average files that stay to a decision, ignore intervention cost, cover one state and year, and the two scenarios overlap. They are order-of-magnitude figures, adjustable on the Opportunity & test tab.
+
+
+### Finding 13 — The direct-refinance leak replicates in all six states
+
+**Result:** The same pipeline was run on Maryland, Virginia, Pennsylvania, Delaware, D.C. and West Virginia (553,213 applications). Direct-channel refinances close incomplete at 9.3–12.2% (MD 12.2, DE 11.8, DC 11.8, VA 11.6, PA 9.5, WV 9.3), against 3.3–6.1% for brokered refinances and 1.5–1.8% for direct purchases. Direct refinances are 63–75% of all stalled files in every state. Walk-aways exceed denials everywhere (21–26% vs 10–14%). Income lowers denials (e.g. 20.5% → 6.9% in MD) but moves walk-aways by at most 4 points in any state. The denial rate at 50–60% DTI is 21–39%, against 8–13% at 43–49%.
+
+**Interpretation:** The leak is a pattern, not a Maryland anecdote, which is what justifies a product test. Two checks are weaker: the DTI jump is only 1.99× in West Virginia (below the 2× rule of thumb used on the app's scoreboard), and West Virginia's broker rate rests on 394 applications.
+
+**Limitation:** Neighbouring states share regulators, markets and many lenders, so this is replication, not independence. One year of data. Scoreboard thresholds are rules of thumb, not formal tests.
+
+
+### Finding 14 — Walk-away is barely predictable from application data
+
+**Result:** A gradient-boosted model on 13 application-time fields, scored out-of-lender (5-fold cross-validation grouped by lender), reaches AUC 0.55–0.63 for walk-away across states, versus 0.56–0.62 for simply knowing loan purpose and type. Adding the application channel raises it by 0.00–0.02. Denial is far more predictable (AUC 0.72–0.76 vs 0.68–0.70 for the baseline), driven by loan-to-income. Predicted totals are within 1% of observed in the large states.
+
+**Interpretation:** Who walks away is largely not knowable from what HMDA records at application time. It is driven by what happens after applying: process, documentation, price shopping. Product consequence: offer a completion assistant to every eligible applicant rather than targeting by a score, which also avoids a fair-lending risk.
+
+**Limitation:** HMDA has no credit score, no timestamps and no rate-lock data, which a lender would have. A lender's own data could predict much better, and that is the next experiment.
+
+
+### Finding 15 — Lender gaps are not a loan-mix artefact
+
+**Result:** Replacing the purpose × loan type adjustment with the ML model leaves lender O/E rankings almost unchanged (rank correlation 0.94–0.98) and the true lender-to-lender spread τ at 0.37–0.50 (it was 0.34–0.44). In Maryland, 6 of 7 mix-adjusted frontier lenders stay on the ML frontier; across states the kept share is 4/4, 5/6, 5/5, 2/2 and 6/7 (VA, PA, DE, DC, WV). Counts of significantly worse lenders barely move (MD 36 → 35).
+
+**Interpretation:** A much richer case-mix control does not shrink the gap, so lenders differ in how well they keep applicants for reasons other than who applies.
+
+**Limitation:** The model uses only 13 lender-independent fields; unobserved borrower quality could still explain some differences. Out-of-lender scoring is harsh in small states, where one large lender can move the totals.
+
+
+### Finding 16 — How much of the lender spread is real? (funnel plot and shrinkage)
+
+**Result:** After removing sampling noise (DerSimonian–Laird), the true spread of walk-away O/E across lenders is τ ≈ 0.40 in Maryland (0.34–0.44 across states), i.e. roughly ±40% of expected. In Maryland 36 lenders sit above and 43 below the 95% funnel limits, far more than the ~3 expected by chance on each side. Shrunk O/E estimates pull small lenders toward the average in proportion to their noise.
+
+**Interpretation:** Lender differences are real and large, so lender-level benchmarking is meaningful; but individual small-lender rankings should use the shrunk estimate.
+
+**Limitation:** The test assumes independent applications and ignores any clustering inside a lender (e.g. by branch or loan officer).

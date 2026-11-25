@@ -1,0 +1,6 @@
+outcome,apps,income_pct,property_value_pct,cltv_pct,dti_pct,rate_pct,costs_pct
+originated,14070,95.2,97.1,94.7,94.6,99.2,94.7
+customer_withdrew,3485,94.1,0.0,0.0,0.0,0.0,0.0
+lender_denied,2690,95.2,92.3,91.8,87.2,0.0,0.0
+stalled_incomplete,1097,85.1,0.0,0.0,0.0,0.0,0.0
+customer_declined,630,82.7,90.0,82.4,74.1,91.3,0.0

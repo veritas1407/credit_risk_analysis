@@ -1,0 +1,3 @@
+grp,lenders,loans,med_spread,med_costs,med_points,med_rate
+All other lenders,4,867,0.01,7251.24,3777.75,6.5
+Robust frontier (adjusted and income-adjusted),2,476,0.15,6902.33,3550.0,6.62

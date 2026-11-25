@@ -1,7 +1,37 @@
 state,year,step,rows
+DC,2024,raw file,16963
+DC,2024,"applications only (action 1-5, 8)",15204
+DC,2024,"single-family, site-built",14984
+DC,2024,first lien,11520
+DC,2024,owner-occupied principal residence,9618
+DC,2024,purchase / refi / cash-out refi,9060
+DE,2024,raw file,48786
+DE,2024,"applications only (action 1-5, 8)",42090
+DE,2024,"single-family, site-built",39540
+DE,2024,first lien,28051
+DE,2024,owner-occupied principal residence,23861
+DE,2024,purchase / refi / cash-out refi,21972
 MD,2024,raw file,235625
 MD,2024,"applications only (action 1-5, 8)",206077
 MD,2024,"single-family, site-built",203423
 MD,2024,first lien,143291
 MD,2024,owner-occupied principal residence,125404
 MD,2024,purchase / refi / cash-out refi,118431
+PA,2024,raw file,446604
+PA,2024,"applications only (action 1-5, 8)",409137
+PA,2024,"single-family, site-built",396778
+PA,2024,first lien,268561
+PA,2024,owner-occupied principal residence,231658
+PA,2024,purchase / refi / cash-out refi,199706
+VA,2024,raw file,351177
+VA,2024,"applications only (action 1-5, 8)",309727
+VA,2024,"single-family, site-built",296883
+VA,2024,first lien,209026
+VA,2024,owner-occupied principal residence,188501
+VA,2024,purchase / refi / cash-out refi,177024
+WV,2024,raw file,54342
+WV,2024,"applications only (action 1-5, 8)",49536
+WV,2024,"single-family, site-built",41423
+WV,2024,first lien,33468
+WV,2024,owner-occupied principal residence,30152
+WV,2024,purchase / refi / cash-out refi,27020

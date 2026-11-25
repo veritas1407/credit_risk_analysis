@@ -1,0 +1,7 @@
+purpose_label,channel_label,apps,originated,denied,withdrew,incomplete,declined
+cash_out_refi,direct,1001,324,329,212,114,22
+cash_out_refi,indirect,112,60,24,22,4,2
+purchase,direct,5940,4155,352,1157,103,173
+purchase,indirect,851,617,83,99,20,32
+refinance,direct,981,506,111,217,119,28
+refinance,indirect,131,80,21,17,7,6

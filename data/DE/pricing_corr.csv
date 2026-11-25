@@ -1,0 +1,9 @@
+measure,price,spearman,lenders
+Walk-away O/E,Median rate spread,0.07,19
+Walk-away O/E,Median loan costs,0.18,19
+Walk-away O/E,Median discount points,0.09,19
+Walk-away O/E,Median interest rate,0.0,19
+Denial O/E,Median rate spread,-0.22,19
+Denial O/E,Median loan costs,-0.38,19
+Denial O/E,Median discount points,-0.14,19
+Denial O/E,Median interest rate,-0.08,19

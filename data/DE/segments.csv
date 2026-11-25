@@ -1,0 +1,6 @@
+loan_type,channel_label,apps,walkaway_pct,denial_pct
+3,direct,2732,32.8,13.0
+2,direct,5159,26.9,19.4
+1,direct,11064,22.1,9.3
+2,indirect,833,19.2,16.1
+1,indirect,1529,13.7,6.9

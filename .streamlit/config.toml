@@ -1,0 +1,36 @@
+[theme]
+base = "dark"
+primaryColor = "#6D4DFF"
+backgroundColor = "#0B1020"
+secondaryBackgroundColor = "#131A2E"
+textColor = "#E8ECF5"
+linkColor = "#9DB4FF"
+borderColor = "#27304A"
+baseRadius = "12px"
+buttonRadius = "10px"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Space Grotesk:https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+headingFontSizes = ["2.6rem", "1.8rem", "1.3rem", "1.1rem", "1rem", "0.9rem"]
+headingFontWeights = [700, 600, 600, 600, 600, 600]
+metricValueFontSize = "2rem"
+metricValueFontWeight = 700
+paddingTop = "2.5rem"
+paddingBottom = "4rem"
+# outcome palette first (originated, denied, withdrew, incomplete, declined), then supporting hues
+chartCategoricalColors = ["#2EE6C5", "#FF5C7A", "#FFC857", "#FF7F32", "#B79CFF", "#6EA8FF", "#8FA0C2"]
+chartSequentialColors = ["#16213F", "#1D2F5C", "#254078", "#2F5394", "#3F6BB0", "#5A8AC8", "#83ABDC", "#AFC9EA", "#D2E1F4", "#EEF4FB"]
+chartDivergingColors = ["#2EE6C5", "#5DD8BE", "#8FCBB8", "#C0BFB3", "#E8B5A6", "#F59A8B", "#F97A72", "#FF5C7A", "#E8456C", "#C92D5B"]
+dataframeHeaderBackgroundColor = "#1A2340"
+
+[theme.sidebar]
+backgroundColor = "#0E1428"
+secondaryBackgroundColor = "#172039"
+borderColor = "#27304A"
+
+[client]
+toolbarMode = "minimal"
+showSidebarNavigation = true
+
+[browser]
+gatherUsageStats = false

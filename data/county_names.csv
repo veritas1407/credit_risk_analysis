@@ -1,0 +1,284 @@
+fips,state,county
+10001,DE,Kent
+10003,DE,New Castle
+10005,DE,Sussex
+11001,DC,District of Columbia
+24001,MD,Allegany
+24003,MD,Anne Arundel
+24005,MD,Baltimore
+24009,MD,Calvert
+24011,MD,Caroline
+24013,MD,Carroll
+24015,MD,Cecil
+24017,MD,Charles
+24019,MD,Dorchester
+24021,MD,Frederick
+24023,MD,Garrett
+24025,MD,Harford
+24027,MD,Howard
+24029,MD,Kent
+24031,MD,Montgomery
+24033,MD,Prince George's
+24035,MD,Queen Anne's
+24037,MD,St. Mary's
+24039,MD,Somerset
+24041,MD,Talbot
+24043,MD,Washington
+24045,MD,Wicomico
+24047,MD,Worcester
+24510,MD,Baltimore city
+42001,PA,Adams
+42003,PA,Allegheny
+42005,PA,Armstrong
+42007,PA,Beaver
+42009,PA,Bedford
+42011,PA,Berks
+42013,PA,Blair
+42015,PA,Bradford
+42017,PA,Bucks
+42019,PA,Butler
+42021,PA,Cambria
+42023,PA,Cameron
+42025,PA,Carbon
+42027,PA,Centre
+42029,PA,Chester
+42031,PA,Clarion
+42033,PA,Clearfield
+42035,PA,Clinton
+42037,PA,Columbia
+42039,PA,Crawford
+42041,PA,Cumberland
+42043,PA,Dauphin
+42045,PA,Delaware
+42047,PA,Elk
+42049,PA,Erie
+42051,PA,Fayette
+42053,PA,Forest
+42055,PA,Franklin
+42057,PA,Fulton
+42059,PA,Greene
+42061,PA,Huntingdon
+42063,PA,Indiana
+42065,PA,Jefferson
+42067,PA,Juniata
+42069,PA,Lackawanna
+42071,PA,Lancaster
+42073,PA,Lawrence
+42075,PA,Lebanon
+42077,PA,Lehigh
+42079,PA,Luzerne
+42081,PA,Lycoming
+42083,PA,McKean
+42085,PA,Mercer
+42087,PA,Mifflin
+42089,PA,Monroe
+42091,PA,Montgomery
+42093,PA,Montour
+42095,PA,Northampton
+42097,PA,Northumberland
+42099,PA,Perry
+42101,PA,Philadelphia
+42103,PA,Pike
+42105,PA,Potter
+42107,PA,Schuylkill
+42109,PA,Snyder
+42111,PA,Somerset
+42113,PA,Sullivan
+42115,PA,Susquehanna
+42117,PA,Tioga
+42119,PA,Union
+42121,PA,Venango
+42123,PA,Warren
+42125,PA,Washington
+42127,PA,Wayne
+42129,PA,Westmoreland
+42131,PA,Wyoming
+42133,PA,York
+51001,VA,Accomack
+51003,VA,Albemarle
+51005,VA,Alleghany
+51007,VA,Amelia
+51009,VA,Amherst
+51011,VA,Appomattox
+51013,VA,Arlington
+51015,VA,Augusta
+51017,VA,Bath
+51019,VA,Bedford
+51021,VA,Bland
+51023,VA,Botetourt
+51025,VA,Brunswick
+51027,VA,Buchanan
+51029,VA,Buckingham
+51031,VA,Campbell
+51033,VA,Caroline
+51035,VA,Carroll
+51036,VA,Charles City
+51037,VA,Charlotte
+51041,VA,Chesterfield
+51043,VA,Clarke
+51045,VA,Craig
+51047,VA,Culpeper
+51049,VA,Cumberland
+51051,VA,Dickenson
+51053,VA,Dinwiddie
+51057,VA,Essex
+51059,VA,Fairfax
+51061,VA,Fauquier
+51063,VA,Floyd
+51065,VA,Fluvanna
+51067,VA,Franklin
+51069,VA,Frederick
+51071,VA,Giles
+51073,VA,Gloucester
+51075,VA,Goochland
+51077,VA,Grayson
+51079,VA,Greene
+51081,VA,Greensville
+51083,VA,Halifax
+51085,VA,Hanover
+51087,VA,Henrico
+51089,VA,Henry
+51091,VA,Highland
+51093,VA,Isle of Wight
+51095,VA,James City
+51097,VA,King and Queen
+51099,VA,King George
+51101,VA,King William
+51103,VA,Lancaster
+51105,VA,Lee
+51107,VA,Loudoun
+51109,VA,Louisa
+51111,VA,Lunenburg
+51113,VA,Madison
+51115,VA,Mathews
+51117,VA,Mecklenburg
+51119,VA,Middlesex
+51121,VA,Montgomery
+51125,VA,Nelson
+51127,VA,New Kent
+51131,VA,Northampton
+51133,VA,Northumberland
+51135,VA,Nottoway
+51137,VA,Orange
+51139,VA,Page
+51141,VA,Patrick
+51143,VA,Pittsylvania
+51145,VA,Powhatan
+51147,VA,Prince Edward
+51149,VA,Prince George
+51153,VA,Prince William
+51155,VA,Pulaski
+51157,VA,Rappahannock
+51159,VA,Richmond
+51161,VA,Roanoke
+51163,VA,Rockbridge
+51165,VA,Rockingham
+51167,VA,Russell
+51169,VA,Scott
+51171,VA,Shenandoah
+51173,VA,Smyth
+51175,VA,Southampton
+51177,VA,Spotsylvania
+51179,VA,Stafford
+51181,VA,Surry
+51183,VA,Sussex
+51185,VA,Tazewell
+51187,VA,Warren
+51191,VA,Washington
+51193,VA,Westmoreland
+51195,VA,Wise
+51197,VA,Wythe
+51199,VA,York
+51510,VA,Alexandria city
+51520,VA,Bristol city
+51530,VA,Buena Vista city
+51540,VA,Charlottesville city
+51550,VA,Chesapeake city
+51570,VA,Colonial Heights city
+51580,VA,Covington city
+51590,VA,Danville city
+51595,VA,Emporia city
+51600,VA,Fairfax city
+51610,VA,Falls Church city
+51620,VA,Franklin city
+51630,VA,Fredericksburg city
+51640,VA,Galax city
+51650,VA,Hampton city
+51660,VA,Harrisonburg city
+51670,VA,Hopewell city
+51678,VA,Lexington city
+51680,VA,Lynchburg city
+51683,VA,Manassas city
+51685,VA,Manassas Park city
+51690,VA,Martinsville city
+51700,VA,Newport News city
+51710,VA,Norfolk city
+51720,VA,Norton city
+51730,VA,Petersburg city
+51735,VA,Poquoson city
+51740,VA,Portsmouth city
+51750,VA,Radford city
+51760,VA,Richmond city
+51770,VA,Roanoke city
+51775,VA,Salem city
+51790,VA,Staunton city
+51800,VA,Suffolk city
+51810,VA,Virginia Beach city
+51820,VA,Waynesboro city
+51830,VA,Williamsburg city
+51840,VA,Winchester city
+54001,WV,Barbour
+54003,WV,Berkeley
+54005,WV,Boone
+54007,WV,Braxton
+54009,WV,Brooke
+54011,WV,Cabell
+54013,WV,Calhoun
+54015,WV,Clay
+54017,WV,Doddridge
+54019,WV,Fayette
+54021,WV,Gilmer
+54023,WV,Grant
+54025,WV,Greenbrier
+54027,WV,Hampshire
+54029,WV,Hancock
+54031,WV,Hardy
+54033,WV,Harrison
+54035,WV,Jackson
+54037,WV,Jefferson
+54039,WV,Kanawha
+54041,WV,Lewis
+54043,WV,Lincoln
+54045,WV,Logan
+54047,WV,McDowell
+54049,WV,Marion
+54051,WV,Marshall
+54053,WV,Mason
+54055,WV,Mercer
+54057,WV,Mineral
+54059,WV,Mingo
+54061,WV,Monongalia
+54063,WV,Monroe
+54065,WV,Morgan
+54067,WV,Nicholas
+54069,WV,Ohio
+54071,WV,Pendleton
+54073,WV,Pleasants
+54075,WV,Pocahontas
+54077,WV,Preston
+54079,WV,Putnam
+54081,WV,Raleigh
+54083,WV,Randolph
+54085,WV,Ritchie
+54087,WV,Roane
+54089,WV,Summers
+54091,WV,Taylor
+54093,WV,Tucker
+54095,WV,Tyler
+54097,WV,Upshur
+54099,WV,Wayne
+54101,WV,Webster
+54103,WV,Wetzel
+54105,WV,Wirt
+54107,WV,Wood
+54109,WV,Wyoming

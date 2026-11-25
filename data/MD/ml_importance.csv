@@ -1,0 +1,41 @@
+feature,importance,importance_sd,model
+purpose,0.00383,0.00197,Walk-away
+loan_type,0.00512,0.00129,Walk-away
+log_income,0.00535,0.0001,Walk-away
+log_loan_amount,0.00459,0.00079,Walk-away
+loan_to_income,0.00163,0.00157,Walk-away
+loan_term,0.00205,0.0012,Walk-away
+total_units,0.00046,0.00019,Walk-away
+conforming,0.0002,4e-05,Walk-away
+open_end,0.00058,0.00104,Walk-away
+reverse_mortgage,0.00039,0.00012,Walk-away
+tract_income_pct,0.006,0.00119,Walk-away
+county,0.01025,0.00171,Walk-away
+preapproval,0.00502,0.00047,Walk-away
+purpose,0.08036,0.0012,Denial
+loan_type,0.01262,0.00102,Denial
+log_income,0.00882,0.00084,Denial
+log_loan_amount,0.0093,0.00105,Denial
+loan_to_income,0.04779,0.00042,Denial
+loan_term,0.00207,0.00021,Denial
+total_units,0.0012,0.00014,Denial
+conforming,6e-05,0.0001,Denial
+open_end,0.00398,0.00083,Denial
+reverse_mortgage,0.0002,4e-05,Denial
+tract_income_pct,0.00698,0.00138,Denial
+county,0.01869,0.00198,Denial
+preapproval,0.02913,0.00226,Denial
+purpose,0.00152,0.00148,Walk-away + channel
+loan_type,0.00486,0.00081,Walk-away + channel
+log_income,0.0031,0.00103,Walk-away + channel
+log_loan_amount,0.00573,0.00144,Walk-away + channel
+loan_to_income,0.00156,0.00105,Walk-away + channel
+loan_term,0.00187,0.00155,Walk-away + channel
+total_units,0.00046,0.00013,Walk-away + channel
+conforming,9e-05,1e-05,Walk-away + channel
+open_end,0.00086,0.00103,Walk-away + channel
+reverse_mortgage,0.00015,6e-05,Walk-away + channel
+tract_income_pct,0.00644,0.00163,Walk-away + channel
+county,0.01036,0.00059,Walk-away + channel
+preapproval,0.0066,0.00016,Walk-away + channel
+channel,0.02766,0.00029,Walk-away + channel

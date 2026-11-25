@@ -1,0 +1,16 @@
+purpose_label,outcome,apps
+cash_out_refi,originated,1805
+cash_out_refi,lender_denied,1120
+cash_out_refi,customer_withdrew,939
+cash_out_refi,stalled_incomplete,499
+cash_out_refi,customer_declined,94
+purchase,originated,10512
+purchase,customer_withdrew,1988
+purchase,lender_denied,1118
+purchase,customer_declined,358
+purchase,stalled_incomplete,250
+refinance,originated,1753
+refinance,customer_withdrew,558
+refinance,lender_denied,452
+refinance,stalled_incomplete,348
+refinance,customer_declined,178
