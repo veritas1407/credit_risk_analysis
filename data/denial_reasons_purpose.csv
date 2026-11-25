@@ -1,0 +1,29 @@
+purpose_label,code,reason,denials
+cash_out_refi,1,Debt-to-income ratio,1354
+cash_out_refi,2,Employment history,34
+cash_out_refi,3,Credit history,1573
+cash_out_refi,4,Collateral,929
+cash_out_refi,5,Insufficient cash,94
+cash_out_refi,6,Unverifiable information,198
+cash_out_refi,7,Credit application incomplete,1224
+cash_out_refi,9,Other,364
+cash_out_refi,NA,Not reported,16
+purchase,1,Debt-to-income ratio,2045
+purchase,2,Employment history,179
+purchase,3,Credit history,620
+purchase,4,Collateral,892
+purchase,5,Insufficient cash,412
+purchase,6,Unverifiable information,380
+purchase,7,Credit application incomplete,392
+purchase,8,Mortgage insurance denied,4
+purchase,9,Other,520
+purchase,NA,Not reported,49
+refinance,1,Debt-to-income ratio,573
+refinance,2,Employment history,11
+refinance,3,Credit history,532
+refinance,4,Collateral,280
+refinance,5,Insufficient cash,157
+refinance,6,Unverifiable information,70
+refinance,7,Credit application incomplete,474
+refinance,9,Other,358
+refinance,NA,Not reported,21

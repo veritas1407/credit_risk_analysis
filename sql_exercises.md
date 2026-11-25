@@ -16,6 +16,9 @@ Reference for the DataLemur CTE / subquery tutorial: https://datalemur.com/sql-t
 
 ---
 
+> A reference implementation of everything below already exists in `build_data.py` (it feeds the app), so these are
+> now pure practice. Try each yourself first, then compare. Q9 result to match: 5 of 7 adjusted-frontier lenders survive.
+
 ## To do (in this order)
 
 ### Q5b. Raw vs adjusted frontier

@@ -1,0 +1,9 @@
+key,value,note
+approval_given_stay,0.8437,originated / (originated + denied): share of files that stay to a decision and are funded
+med_costs_refinance,6172.0,"median borrower-paid total loan costs, originated loans"
+med_loan_refinance,375000.0,"median loan amount, originated loans"
+med_costs_cash_out_refi,10810.0,"median borrower-paid total loan costs, originated loans"
+med_loan_cash_out_refi,285000.0,"median loan amount, originated loans"
+med_costs_purchase,7877.0,"median borrower-paid total loan costs, originated loans"
+med_loan_purchase,395000.0,"median loan amount, originated loans"
+med_loan_all,375000.0,"median loan amount, all originated loans"

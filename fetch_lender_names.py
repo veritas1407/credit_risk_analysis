@@ -1,7 +1,7 @@
 """
 fetch_lender_names.py: map lender LEIs to legal names using the public GLEIF registry.
 
-Input : hmda_clean.parquet (lenders with >= 200 applications)
+Input : hmda_clean.parquet (lenders with >= 200 applications + top lender per county)
 Output: data/lender_names.csv  (lei, name)
 
 Only LEIs (public identifiers) are sent to GLEIF. Run once; the app reads the CSV.
@@ -17,11 +17,15 @@ import pandas as pd
 
 os.makedirs("data", exist_ok=True)
 
+# lenders with >= 200 applications, plus the largest lender in every county (shown in the app)
 leis = [
     r[0]
-    for r in duckdb.sql(
-        "SELECT lei FROM read_parquet('hmda_clean.parquet') GROUP BY lei HAVING COUNT(*) >= 200"
-    ).fetchall()
+    for r in duckdb.sql("""
+        WITH cl AS (SELECT county_code, lei, COUNT(*) AS n FROM read_parquet('hmda_clean.parquet') GROUP BY ALL),
+             top AS (SELECT lei FROM cl WHERE n = (SELECT MAX(n) FROM cl c2 WHERE c2.county_code = cl.county_code))
+        SELECT lei FROM read_parquet('hmda_clean.parquet') GROUP BY lei HAVING COUNT(*) >= 200
+        UNION SELECT lei FROM top
+    """).fetchall()
 ]
 
 rows = []

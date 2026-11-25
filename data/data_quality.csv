@@ -1,0 +1,10 @@
+check,result,implication
+Scope,"118,431 applications after filtering 235,625 raw rows (attrition.csv)","First-lien, owner-occupied, site-built 1-4 unit; purchase / refinance / cash-out refi only."
+Income missing / non-positive / above $2M,"7,196 / 1,234 / 114",Excluded from income bands (and set to band 0 in the income-adjusted check). Income is in $000s.
+"DTI, CLTV, property value for withdrawn / incomplete files",DTI missing for 100.0% (also 100% for CLTV and property value),"HMDA blank-by-rule: a 'reached_underwriting' flag built from these fields is circular, so it is not used."
+Automated underwriting system = 'not applicable',31.3% of withdrawn files; 43% walk-away rate for that group,"AUS code is a result of the funnel stage, not a cause of abandonment: not used as a driver."
+Pre-approval requested,"3,948 files, 0 lender denials","Denied pre-approval requests are a separate HMDA action outside the scope, so pre-approved files look unrealistically good: not used."
+"Possible duplicate rows (same lender, county, amount, income, value, action, rate)",762,"HMDA has no application ID, so these cannot be separated from genuine near-identical applications. Kept."
+Lenders with 200+ applications,111 of 615 lenders cover 88.2% of applications,Smaller lenders are excluded from lender comparisons (their rates are too noisy).
+Pricing fields,Present only for originated loans (rate also for approved-not-accepted),Pricing comparisons use one fixed segment (conventional purchase) and carry survivorship bias.
+Unit of analysis,"Application, not borrower","HMDA has no applicant id, so repeat applicants cannot be linked."
