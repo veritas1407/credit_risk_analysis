@@ -23,7 +23,10 @@ VIEWS = {
 view = st.segmented_control("Compare lenders on", list(VIEWS), default="Mix-adjusted", required=True, key="len_view")
 xcol, ycol, fcol, adjusted, how = VIEWS[view]
 L["tier"] = np.where(L[fcol], "On the frontier", np.where(L.wa_z > 1.96, "Significantly more walk-aways than mix predicts", "Other lenders"))
-L["short"] = L.name.str.replace(r",? (L\.?L\.?C\.?|LLC|INC\.?|Inc\.?|CORP\.?|N\.A\.|NA|LP|L\.P\.)$", "", regex=True).str.slice(0, 26)
+
+yr = store._csv("data/temporal_summary.csv").set_index("state").loc[ctx.state]
+ui.callout(f"<b>One year only.</b> This chart uses 2024 data. In {ctx.name}, {int(yr.frontier_both)} of the {int(yr.frontier_2024)} lenders on the 2024 "
+           "mix-adjusted frontier were also on it in 2023. Treat the frontier as a shortlist to investigate, not a ranking of the best lenders.", "warn")
 
 c_left, c_right = st.columns([1.7, 1])
 with c_left:
@@ -36,8 +39,8 @@ with c_left:
             hovertemplate="<b>%{customdata[1]}</b><br>%{customdata[2]:,} applications<br>Walk-away %{customdata[3]:.1f}% (O/E %{customdata[5]:.2f})"
                           "<br>Denial %{customdata[4]:.1f}% (O/E %{customdata[6]:.2f})<extra></extra>"))
     fr = L[L[fcol]].sort_values(xcol)
-    fig.add_trace(go.Scatter(x=fr[xcol], y=fr[ycol], mode="lines+text", line=dict(color=store.TEAL, dash="dot", width=1.5, shape="hv"), text=fr.short,
-                             textposition="top right", textfont=dict(size=10.5, color="#BFEFE6"), hoverinfo="skip", showlegend=False))
+    fig.add_trace(go.Scatter(x=fr[xcol], y=fr[ycol], mode="lines", line=dict(color=store.TEAL, dash="dot", width=1.5, shape="hv"),
+                             hoverinfo="skip", showlegend=False))
     if adjusted:
         fig.add_hline(y=1, line=dict(color="rgba(255,255,255,.25)", width=1)); fig.add_vline(x=1, line=dict(color="rgba(255,255,255,.25)", width=1))
     fig.update_xaxes(title=("Denial O/E (1.0 = as expected for its mix)" if adjusted else "Denial rate (%)"), rangemode="tozero")
@@ -51,7 +54,6 @@ with c_right:
         dict(label="Significantly worse than mix", value=int(S.sig_worse), decimals=0, color=store.ORANGE, sub=f"{int(S.sig_better)} significantly better"),
     ])
     st.markdown("**How robust is the frontier?**")
-    yr = store._csv("data/temporal_summary.csv").set_index("state").loc[ctx.state]
     rob = pd.DataFrame({
         "Check": ["On raw and mix-adjusted", "Survive adding income", "Survive requiring 500+ applications", "Survive the ML adjustment", "On the 2023 frontier too"],
         "Kept": [f"{int(S.f_adj_and_raw)} of {int(S.f_adj)}", f"{int(S.f_adj_and_inc)} of {int(S.f_adj)}",
