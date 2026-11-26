@@ -23,7 +23,7 @@ ui.kpis([
     dict(label="Applications", value=ctx.total / 1000, decimals=1, unit="K", color="#6EA8FF", sub=f"{S.lenders:.0f} lenders with 200+ files"),
     dict(label="Funded", value=S.orig_pct, unit="%", color=store.TEAL, sub="loan originated"),
     dict(label="Applicant walked away", value=S.walk_pct, unit="%", color=store.ORANGE, sub="withdrew, never finished, or declined the offer"),
-    dict(label="Denied by lender", value=S.den_pct, unit="%", color=store.ROSE, sub="the number most teams watch"),
+    dict(label="Denied by lender", value=S.den_pct, unit="%", color=store.ROSE, sub="the lender's decision"),
     dict(label="Direct refinances closed incomplete", value=S.dir_refi_inc_pct, unit="%", color=store.AMBER,
          sub=f"vs {S.ind_refi_inc_pct:.1f}% through brokers"),
 ])
@@ -46,7 +46,7 @@ with c2.container(key="card-f2"):
 with c3.container(key="card-f3"):
     ui.finding(3, f"<b>Lenders differ, and loan mix doesn't explain it.</b> {S.sig_worse:.0f} of {S.lenders:.0f} lenders lose significantly more "
                   f"applicants than their mix predicts. A 13-feature ML model leaves the lender spread at τ = {ML.tau_ml:.2f} "
-                  f"(from {ML.tau_segment:.2f}): the gap is process, not who applies.")
+                  f"(from {ML.tau_segment:.2f}). The fields HMDA records don't explain the gap, and the data doesn't show what does.")
 
 left, right = st.columns([1.15, 1])
 with left:
@@ -62,9 +62,11 @@ st.caption("Files closed incomplete: the lender could not get what it needed to 
 opp = calc.opportunity_direct_refi(ctx.leak, ctx.assumptions, 0.25, 100)
 st.subheader("What to do")
 ui.callout("<b>Recommendation:</b> test a <b>file-completion assistant</b> on direct-channel refinance applications: a live document checklist, "
-           "automated nudges, and a human call when a file stalls for 48 hours. It targets the largest identifiable leak and does not touch the credit "
-           "decision. Because walk-away is barely predictable from application data (see <i>Case-mix model</i>), offer it to every eligible applicant "
-           "rather than scoring who gets it.", "good")
+           "automated nudges, and a human call when a file stalls for 48 hours. It targets a concentrated leak at a specific step and does not touch the credit "
+           "decision. Offer it to every eligible applicant in the test. Unfinished files are moderately predictable (see <i>Six-state check</i>), so a score could "
+           "later decide who gets the human call first, only after a fair-lending review and evidence that high-risk applicants benefit.", "good")
+ui.callout(f"<b>Keep the scale in view.</b> Unfinished files are {S.incomplete_pct:.1f} of every 100 applications in {ctx.name}; withdrawals are "
+           f"{100 * ctx.by_outcome['customer_withdrew'] / ctx.total:.1f}. The data records no reason for either, so whether paperwork causes the leak is a hypothesis the test has to check.", "warn")
 ui.kpis([
     dict(label=f"Funded loans recovered ({ctx.state}, one year)", value=opp.funded_loans.sum(), decimals=0, color=store.TEAL,
          sub="if the assistant closes 25% of the direct-vs-broker gap"),

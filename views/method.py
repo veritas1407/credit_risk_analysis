@@ -38,6 +38,8 @@ st.markdown("""
   withdrawals, so a high O/E is a flag to investigate, not proof of a weaker process.
 - **Channel is deliberately not adjusted** in the main comparison: it is the lender's own business-model choice. The direct-vs-broker gap is an association;
   brokers pre-screen and coach applicants, so not all of it is recoverable.
+- **Blank fields are not random.** Income is blank much more often on incomplete and declined-offer files. The transfer test drops income fields for this reason;
+  the income-adjusted frontier groups unknown income into its own band, which may favour lenders with many such files.
 - **Small lenders are noisy.** Lenders need 200+ applications; frontiers of 2–7 lenders move when one lender moves.
 - **Walk-away mixes distinct events.** Withdrawal timing is unknown, so it is not all confirmed rejection of an offer.
 - **Each lender is compared with a baseline that includes itself.** The largest lender pulls the baseline toward its own rate.
@@ -69,6 +71,7 @@ python fetch_lender_names.py   # LEI -> legal name via the public GLEIF registry
 python prep_geo.py         # county names + map shapes
 python build_data.py       # per-state tables + assertions (fails if any check disagrees)
 python build_ml.py         # out-of-lender gradient-boosted case-mix model
+python build_transfer.py   # train on Maryland, test on the other five states
 streamlit run app.py""", language="bash")
 st.caption("Source: FFIEC HMDA Data Browser, 2024 LAR. Lender names: GLEIF. Built with DuckDB, scikit-learn, Plotly and Streamlit. "
            "Descriptive analysis only; no claim about any lender's practices.")

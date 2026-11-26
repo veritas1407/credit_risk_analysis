@@ -11,7 +11,7 @@ S = ctx.s
 SHORT = {"Debt-to-income ratio": "DTI", "Credit history": "Credit", "Credit application incomplete": "Incomplete", "Insufficient cash": "Cash",
          "Unverifiable information": "Unverified", "Employment history": "Employment", "Not reported": "n/r", "Mortgage insurance denied": "MI denied"}
 st.title("Denials")
-st.write("Denials are the number most teams watch. Why do they happen, and where does the line fall?")
+st.write("Why are applications denied, and where does the line fall?")
 
 # ---------------------------------------------------------------- reasons
 dp = ctx.den_purpose.copy()
@@ -34,7 +34,7 @@ top = {p: dp[dp.purpose_label == p].sort_values("denials", ascending=False).iloc
 ui.callout("<b>Top reason by purpose:</b> " + "; ".join(f"{store.PURPOSE[p]} → {r.reason.lower()} ({r.share:.0f}%)" for p, r in top.items()) + ". "
            f"<b>'Credit application incomplete' is itself a denial reason:</b> {S.get('den_incomplete_share_cash_out_refi', float('nan')):.0f}% of cash-out and "
            f"{S.get('den_incomplete_share_refinance', float('nan')):.0f}% of refinance denials, against {S.get('den_incomplete_share_purchase', float('nan')):.0f}% of purchase denials. "
-           "It is the same document-completion failure that shows up in stalled files, here recorded as a formal denial.", "warn")
+           "It may be the same document problem seen in stalled files, recorded here as a formal denial; HMDA cannot confirm that.", "warn")
 
 # ---------------------------------------------------------------- DTI
 c1, c2 = st.columns([1.2, 1])

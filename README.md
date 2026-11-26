@@ -3,16 +3,17 @@
 Product analysis of home loan applications (HMDA 2024) in Maryland and its five neighbours: where do applicants leave,
 which lenders keep them once loan mix is accounted for, and what should a digital lender build about it?
 
-**Headline:** across 553,213 applications, 21–26% end because the applicant walks away and only 10–14% are denied. The leak is
+**Headline:** across 553,213 applications, 21–26% end because the applicant walks away and only 10–14% are denied. One concentrated leak is
 files closed as incomplete in direct-channel refinances (9.3–12.2% vs 3.3–6.1% through brokers), and it replicates in all six
-states. A 13-feature ML model finds walk-away barely predictable from application data (AUC ≈ 0.6) and does not explain away
-the gaps between lenders.
+states. Walk-away in general is hard to predict (AUC ≈ 0.6) and a 13-feature ML model does not explain the gaps between
+lenders. Unfinished files are more predictable: a model trained on Maryland scores the other five states at AUC 0.73–0.78.
+The data records no reason for leaving, so the cause is a hypothesis for the proposed A/B test.
 
 - **App:** `streamlit run app.py`. Ten pages: overview with an animated funnel, funnel explorer, lender frontier, case-mix model
   (ML), pricing, denials, county map, six-state replication scoreboard, opportunity sizing and A/B calculator, method and data.
   Switch state in the sidebar (also `?state=VA` in the URL).
 - **PM memo:** [memo.md](memo.md)
-- **Findings:** [findings.md](findings.md) (16 findings, each with result / interpretation / limitation)
+- **Findings:** [findings.md](findings.md) (17 findings, each with result / interpretation / limitation)
 
 ## Pipeline
 
@@ -22,6 +23,7 @@ fetch_lender_names.py   lender names from the public GLEIF registry
 prep_geo.py             county names and map shapes (Census)
 build_data.py           SQL (DuckDB) + checks -> per-state tables in data/<ST>/ and data/states.csv
 build_ml.py             out-of-lender gradient-boosted case-mix model -> data/<ST>/ml_*.csv
+build_transfer.py       train on Maryland, test on the other five states, with a missing-income leak check
 calc.py                 opportunity sizing, sample-size maths, empirical-Bayes shrinkage (with built-in checks)
 store.py ui.py charts.py views/*.py   the Streamlit app (app.py is the entry point)
 diagnostics.py          early SQL exploration in DuckDB (views, CTEs, NOT EXISTS frontier)

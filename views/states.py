@@ -95,6 +95,65 @@ st.plotly_chart(ui.style(fig, 340), width="stretch", config={"displayModeBar": F
 st.caption("Frontiers are small (2–7 lenders in most states) so one lender moving changes the percentage a lot; read the hover counts. "
            "The frontier is robust to adding income and to the ML adjustment, much less to the raw-rate view.")
 
+# ---------------------------------------------------------------- transfer to unseen states
+st.subheader("Does a model carry over to states it has never seen?")
+st.write("A model trained on **Maryland only** scores the other five states. The baseline is a lookup table of Maryland's rate for each purpose × channel. "
+         "County is left out (it cannot carry over), and so are the income fields: income is blank far more often on unfinished files, so the blank itself can give the answer away.")
+TR = store._csv("data/transfer_metrics.csv")
+PER = store._csv("data/lender_persistence.csv")
+target = st.segmented_control("Predicting", ["Closed incomplete", "Any walk-away", "Denial"], default="Closed incomplete", required=True, key="st_target")
+t = TR[TR.target == target]
+t1, t2 = st.columns([1.35, 1])
+with t1:
+    fig = go.Figure()
+    fig.add_bar(x=t.test_state, y=t.auc_table, name="Lookup table", marker_color="#5A6B94", text=[f"{v:.2f}" for v in t.auc_table], textposition="outside")
+    fig.add_bar(x=t.test_state, y=t.auc_model, name="Model", marker_color=store.TEAL, text=[f"{v:.2f}" for v in t.auc_model], textposition="outside")
+    fig.add_hline(y=0.5, line=dict(color="rgba(255,255,255,.3)", dash="dot"), annotation_text="coin flip", annotation_position="bottom left", annotation_font_color="#8FA0C2")
+    fig.update_layout(barmode="group", bargap=0.3)
+    fig.update_yaxes(range=[0.45, 0.86], title="AUC on the unseen state")
+    fig.update_xaxes(title="Test state (never used in training)")
+    st.plotly_chart(ui.style(fig, 340), width="stretch", config={"displayModeBar": False}, key="st_transfer",
+                    alt="AUC of the Maryland-trained model and lookup table in five unseen states")
+with t2:
+    st.markdown("**If you could act on only 20% of files, what share of the cases would you reach?**")
+    st.dataframe(pd.DataFrame({"State": t.test_state, "Lookup table %": 100 * t.top20_table, "Model %": 100 * t.top20_model,
+                               "Predicted ÷ observed": t.pred_over_obs}), hide_index=True, width="stretch",
+                 column_config={"Lookup table %": st.column_config.NumberColumn(format="%.0f"), "Model %": st.column_config.NumberColumn(format="%.0f"),
+                                "Predicted ÷ observed": st.column_config.NumberColumn(format="%.2f")})
+    st.caption("Picking at random would reach about 20%. Predicted ÷ observed far from 1.00 means totals need recalibrating on the new data.")
+
+wins = int((t.top20_model > t.top20_table).sum())
+meaning = {"Closed incomplete": "Unfinished files are <b>moderately predictable</b> on unseen states, with much of that coming from purpose and channel alone.",
+           "Any walk-away": "Walk-away in general is <b>weakly predictable</b>: these fields say little about who will leave, and nothing about why.",
+           "Denial": f"Denial ranking carries over. Adding the income fields raises AUC to {t.auc_all_inputs.min():.2f}–{t.auc_all_inputs.max():.2f}, and it stays that high when only files reporting income are used."}[target]
+ui.callout(f"{meaning} Model AUC {t.auc_model.min():.2f}–{t.auc_model.max():.2f} against {t.auc_table.min():.2f}–{t.auc_table.max():.2f} for the table; "
+           f"on the top-20% test the model reaches more cases than the table in {wins} of {len(t)} states. "
+           f"Predicted totals run from {t.pred_over_obs.min():.2f}× to {t.pred_over_obs.max():.2f}× the real count, so <b>recalibrate before using the numbers</b>.", "info")
+if target == "Closed incomplete":
+    ui.callout("<b>What this allows, and what it does not.</b> A score like this could later decide who gets the costly human call first. Before that it needs a fair-lending review "
+               "and a test showing that high-risk applicants actually benefit: high risk does not mean a call will help. The first A/B test should still include every eligible applicant. "
+               "All data is 2024 from neighbouring states that share many lenders, so other years are untested.", "warn")
+
+st.markdown("**Do lenders behave the same way in different states?**")
+p1, p2 = st.columns([1.35, 1])
+with p2:
+    other = st.selectbox("Compare Maryland with", list(PER[PER.state_a == "MD"].state_b), format_func=store.STATES.get, key="st_persist")
+    row = PER[(PER.state_a == "MD") & (PER.state_b == other)].iloc[0]
+    st.metric("Walk-away O/E rank correlation", f"{row.rho_walkaway:.2f}", help="1.00 = identical ranking of lenders in both states")
+    st.caption(f"{int(row.shared_lenders)} lenders have 200+ applications in both. Across all {len(PER)} state pairs with 15+ shared lenders the correlation is "
+               f"{PER.rho_walkaway.min():.2f}–{PER.rho_walkaway.max():.2f} for walk-away and {PER.rho_denial.min():.2f}–{PER.rho_denial.max():.2f} for denial "
+               "(D.C. has too few shared lenders). This suggests something company-wide. It could be how a lender runs applications or the kind of customer it attracts.")
+with p1:
+    both = store.load_state("MD").lenders[["lei", "name", "wa_oe"]].merge(store.load_state(other).lenders[["lei", "wa_oe"]], on="lei", suffixes=("_md", "_other"))
+    top = float(max(both.wa_oe_md.max(), both.wa_oe_other.max()) * 1.05)
+    fig = go.Figure(go.Scatter(x=[0, top], y=[0, top], mode="lines", line=dict(color="rgba(255,255,255,.3)", dash="dot"), hoverinfo="skip"))
+    fig.add_trace(go.Scatter(x=both.wa_oe_md, y=both.wa_oe_other, mode="markers", marker=dict(size=9, color=store.ORANGE, opacity=0.85, line=dict(width=0.5, color="#0B1020")),
+                             customdata=both.name, hovertemplate="<b>%{customdata}</b><br>Maryland O/E %{x:.2f}<br>" + other + " O/E %{y:.2f}<extra></extra>"))
+    fig.update_xaxes(title="Walk-away O/E in Maryland")
+    fig.update_yaxes(title=f"Walk-away O/E in {store.STATES[other]}")
+    st.plotly_chart(ui.style(fig, 340, legend=False), width="stretch", config={"displayModeBar": False}, key="st_persist_chart",
+                    alt="Each shared lender's walk-away O/E in Maryland against another state")
+
 st.subheader("All numbers")
 T = S.join(M[["auc_ml_wa", "auc_ml_den", "tau_ml"]]).reset_index()
 cols = {"state": "State", "apps": "Applications", "walk_pct": "Walk-away %", "den_pct": "Denial %", "dir_refi_inc_pct": "Direct refi incomplete %", "ind_refi_inc_pct": "Broker refi incomplete %",

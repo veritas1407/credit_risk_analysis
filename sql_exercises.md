@@ -49,7 +49,7 @@ For each loan purpose, show each reason's share of that purpose's denials, ranke
 **Concept:** window `SUM(COUNT(*)) OVER (PARTITION BY purpose_label)` and `RANK()` or `ROW_NUMBER()`.
 **Hint 1:** `WHERE outcome = 'lender_denied'`, group by purpose and reason, then divide by the purpose total with a window function.
 **Check:** purchase: DTI (code 1) is the top reason, 2,045 denials; cash-out refi: credit history (code 3), 1,573.
-**Think:** code 7 ("application incomplete") is a process failure, not a credit decision. How big is it for refinances?
+**Think:** code 7 ("application incomplete") reads like a paperwork problem more than a credit judgement. How big is it for refinances?
 
 ### Q8. Geography
 For counties with ≥ 1,000 applications: walk-away % and denial %, and which lender has the most applications in each

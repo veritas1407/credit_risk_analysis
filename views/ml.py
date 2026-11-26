@@ -59,10 +59,10 @@ with c2:
     st.plotly_chart(ui.style(fig, 360, legend=False), width="stretch", config={"displayModeBar": False}, key="ml_imp", alt="Permutation importance of model features")
 
 d_auc = ML.auc_ml_wa - ML.auc_segment_wa
-ui.callout(f"<b>Walk-away is barely predictable.</b> From everything HMDA records at application time, the model reaches AUC {ML.auc_ml_wa:.2f} "
+ui.callout(f"<b>Walk-away in general is hard to predict.</b> From everything HMDA records at application time, the model reaches AUC {ML.auc_ml_wa:.2f} "
            f"(+{d_auc:.2f} over just knowing loan purpose and type; adding the channel gives {ML.auc_ml_wa_channel:.2f}). Denial is far more predictable "
-           f"(AUC {ML.auc_ml_den:.2f}), mainly through loan-to-income. <b>Product meaning:</b> who walks away is not who you can target. "
-           "It is what happens after they apply, so the fix is process, offered to everyone, not a score.", "warn")
+           f"(AUC {ML.auc_ml_den:.2f}), with loan purpose and loan-to-income the main inputs. <b>What this means:</b> these fields say little about who will leave, and nothing about why. "
+           "Unfinished files, which the proposed assistant targets, are a separate and more predictable outcome (see <i>Six-state check</i>).", "warn")
 
 # ---------------------------------------------------------------- calibration + O/E agreement
 c3, c4 = st.columns(2)
@@ -102,7 +102,7 @@ fig.update_layout(barmode="group", bargap=0.3)
 fig.update_yaxes(title="τ: true spread of lender walk-away O/E", range=[0, 0.6])
 st.plotly_chart(ui.style(fig, 340), width="stretch", config={"displayModeBar": False}, key="ml_tau", alt="True between-lender spread under three adjustments in each state")
 ui.callout(f"<b>It does not.</b> τ stays around 0.4 in every state however much case-mix is controlled. Lenders still differ by roughly ±40% in how many applicants they lose, "
-           f"and the frontier mostly survives ({int(ML.f_ml_and_adj)} of {int(ML.f_adj)} here). The lender gap is not an artefact of who applies. "
+           f"and the frontier mostly survives ({int(ML.f_ml_and_adj)} of {int(ML.f_adj)} here). The 13 fields used here do not explain the lender gap. "
            "<b>Caveat:</b> HMDA cannot see credit score, rate shopping or why a file stalled, so these are flags to investigate, not verdicts.", "good")
 
 with st.expander("Model card"):
@@ -121,6 +121,9 @@ total predicted ÷ observed (asserted within 3% for states with 50,000+ applicat
 
 **How O/E is built.** Expected walk-aways for a lender = Σ predicted probabilities over its applications; O/E = observed ÷ expected; z = (obs − exp) ÷ √Σp(1−p).
 τ is the DerSimonian–Laird estimate of the between-lender standard deviation of true O/E.
+
+**Missing income.** Income is blank more often on incomplete and declined-offer files, so a blank carries information about the outcome. In the
+Maryland-trained transfer test, removing both income fields changes walk-away AUC by less than 0.005. That test leaves them out.
 
 **Limits.** Out-of-lender scoring is harsh in small states (a single large lender can move the totals); {ctx.name} has {int(ML.lenders)} lenders in the comparison.
 """)

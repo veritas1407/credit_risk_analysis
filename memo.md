@@ -6,7 +6,7 @@
 ## 1. The problem
 
 25.7% of applications end because the applicant leaves (withdraws, never finishes, or declines the offer). Only 11.6% are denied.
-Funded loans are 62.7%. The larger loss is the one fewer teams measure.
+Funded loans are 62.7%. Applicant exit is the larger loss.
 
 ## 2. Where the loss is
 
@@ -17,9 +17,10 @@ Funded loans are 62.7%. The larger loss is the one fewer teams measure.
 | Direct purchase | 63,341 | 1.7% |
 
 - Direct refinances are **73% of all stalled files** in the state (4,221 of 5,754).
-- Income does not explain it: denials fall from 20.5% to 6.9% as income rises, walk-aways stay at 24–25% in every band.
-- Geography does not explain it: after adjusting for loan mix, county ratios run 0.75–1.10.
-- Price does not explain it: across 78 lenders, walk-away rate (adjusted for loan mix) is uncorrelated with price (|ρ| ≤ 0.13).
+- Walk-aways do not fall with income: denials fall from 20.5% to 6.9% as income rises, walk-aways stay at 24–25% in every band.
+- County adds little: after adjusting for loan mix, county walk-away ratios run 0.75–1.10.
+- Price shows no clear link: across 78 Maryland lenders, mix-adjusted walk-away is essentially uncorrelated with price (|ρ| ≤ 0.13).
+- **Scale:** unfinished files are 4.9 of every 100 applications; withdrawals are 17.9. This memo targets unfinished files because they concentrate at a specific step a product can act on, not because they are the largest group. HMDA records no reason for either.
 
 ## 3. How lenders compare (once loan mix is removed)
 
@@ -31,13 +32,14 @@ and 5 of 7 survive adding income to the adjustment. The best lenders do not char
 **Does it generalise, and can a model explain it?** The direct-refinance leak replicates in Virginia, Pennsylvania, Delaware, D.C. and West
 Virginia (direct refinances close incomplete at 9.3–12.2%, brokered 3.3–6.1%, direct purchases 1.5–1.8%; 63–75% of all stalled files). A gradient-boosted
 model on 13 application-time fields predicts walk-away barely better than loan purpose and type alone (AUC about 0.6), and does not shrink the real
-spread between lenders (τ about 0.4). So walk-away is driven by what happens *after* applying, not by who applies: offer the fix to everyone, do not score.
+spread between lenders (τ about 0.4). These fields do not explain why people leave or why lenders differ. Unfinished files are more predictable: a model trained on
+Maryland scores the other five states with AUC 0.73–0.78 (a purpose × channel table gets 0.71–0.75).
 
 ## 4. Why this intervention (and not the alternatives)
 
 | Option | Verdict |
 |---|---|
-| **File-completion assistant** (live document checklist, nudges, human call at 48 hours) | Targets the single largest identifiable leak; does not touch credit decisions |
+| **File-completion assistant** (live document checklist, nudges, human call at 48 hours) | Targets a concentrated leak at a specific step; does not touch credit decisions |
 | Push more volume to brokers | Gap is partly self-selection; reduces our control of the experience |
 | Cut prices | Walk-away is uncorrelated with price across lenders |
 | Loosen credit | Not an applicant-experience lever; adds risk |
@@ -54,6 +56,7 @@ spread between lenders (τ about 0.4). So walk-away is driven by what happens *a
 - **Population:** new direct refinance and cash-out applications; randomise 50/50 at application level, stratified by purpose and loan type.
 - **Primary metric:** share of files closed incomplete (baseline 12.2%, target 9.2%): about **1,670 files per arm** (80% power, α = 5%).
   Funded rate (40.9% → 43.4%) is a pre-registered secondary readout and would need about 6,120 per arm.
+- **Later, not in this test:** a risk score for unfinished files could decide who gets the human call first, only after a fair-lending review and evidence that high-risk applicants benefit.
 - **Guardrails:** denial-rate *mix* (denials may rise mechanically as more files reach underwriting), cost per file, complaints, time to decision, treatment parity.
 - **Ship if:** incomplete rate falls ≥ 2 points, funded rate does not fall, and guardrails hold. **Stop if** cost per recovered loan exceeds contribution per loan.
 

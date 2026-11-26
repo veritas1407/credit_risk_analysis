@@ -122,5 +122,5 @@ fig.update_layout(barmode="group", bargap=0.3)
 fig.update_yaxes(ticksuffix="%", title="Walk-away rate")
 st.plotly_chart(ui.style(fig, 320), width="stretch", config={"displayModeBar": False}, key="fun_chan",
                 alt="Walk-away rate by loan type for direct and broker channels")
-st.caption("Loan type × channel segments with 500+ applications. Direct applicants leave far more often than broker applicants for every loan type; "
+st.caption("Loan type × channel segments with 500+ applications. Direct applicants leave more often than broker applicants for every loan type shown; "
            "brokers pre-screen and coach applicants, so not all of the gap is recoverable.")

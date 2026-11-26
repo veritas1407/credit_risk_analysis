@@ -125,7 +125,7 @@ st.plotly_chart(ui.style(fig, 420), width="stretch", config={"displayModeBar": F
 ui.callout(f"A funnel plot shows what chance alone would produce: small lenders scatter widely, large ones sit near 1.0. In {ctx.name}, "
            f"<b>{len(above)} lenders sit above and {len(below)} below the 95% funnel</b>, far more than the ~{0.025 * len(L):.0f} expected on each side by luck. "
            f"After removing chance, the true lender-to-lender spread in walk-away O/E is <b>τ = {S.tau:.2f}</b> (about ±{100 * S.tau:.0f}% of expected). "
-           "That is large: lenders genuinely differ in how well they keep applicants.", "good")
+           "That is large: walk-away differs between lenders far more than chance would produce. The data does not show why.", "good")
 
 # ---------------------------------------------------------------- tables
 st.subheader("Where the lost applicants are")
