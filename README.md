@@ -3,6 +3,8 @@
 Product analysis of home loan applications (HMDA 2024) in Maryland and its five neighbours: where do applicants leave,
 which lenders keep them once loan mix is accounted for, and what should a digital lender build about it?
 
+**Live app:** https://creditriskanalysis-hmda.streamlit.app/
+
 **Headline:** across 553,213 applications, 21–26% end because the applicant walks away and only 10–14% are denied. One concentrated leak is
 files closed as incomplete in direct-channel refinances (9.3–12.2% vs 3.3–6.1% through brokers), and it replicates in all six
 states. Walk-away in general is hard to predict (AUC ≈ 0.6) and a 13-feature ML model does not explain the gaps between
@@ -13,7 +15,7 @@ The data records no reason for leaving, so the cause is a hypothesis for the pro
 significant in 2024. Frontier membership was far less stable (14 of 31 places carried over), and the direct-refinance rate fell
 in all six states with no test, so the A/B test needs a concurrent control group.
 
-- **App:** `streamlit run app.py`. Ten pages: overview with an animated funnel, funnel explorer, lender frontier, case-mix model
+- **App:** [open it online](https://creditriskanalysis-hmda.streamlit.app/), or run `streamlit run app.py`. Ten pages: overview with an animated funnel, funnel explorer, lender frontier, case-mix model
   (ML), pricing, denials, county map, six-state replication scoreboard, opportunity sizing and A/B calculator, method and data.
   Switch state in the sidebar (also `?state=VA` in the URL).
 - **PM memo:** [memo.md](memo.md)
