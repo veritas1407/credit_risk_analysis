@@ -43,7 +43,8 @@ st.markdown("""
 - **Small lenders are noisy.** Lenders need 200+ applications; frontiers of 2–7 lenders move when one lender moves.
 - **Walk-away mixes distinct events.** Withdrawal timing is unknown, so it is not all confirmed rejection of an offer.
 - **Each lender is compared with a baseline that includes itself.** The largest lender pulls the baseline toward its own rate.
-- **One year, applications not borrowers.** HMDA has no applicant id and no timestamps. Replication across six states is evidence of a pattern, not proof of causation.
+- **Applications, not borrowers.** HMDA has no applicant id and no timestamps. Replication across six states and 2023 is evidence of a pattern, not proof of causation.
+- **Two neighbouring years at most.** Pages show 2024. 2023 is used only for the year check on the *Six-state check* page; frontier membership changed a lot between the two.
 - **No demographic analysis.** Fair-lending analysis requires protected-class data and a compliance process; none was attempted, and no model here uses protected characteristics.
 """)
 
@@ -72,6 +73,7 @@ python prep_geo.py         # county names + map shapes
 python build_data.py       # per-state tables + assertions (fails if any check disagrees)
 python build_ml.py         # out-of-lender gradient-boosted case-mix model
 python build_transfer.py   # train on Maryland, test on the other five states
+python build_temporal.py   # 2023 -> 2024 check (raw_data/y2023/<ST>_2023.csv)
 streamlit run app.py""", language="bash")
-st.caption("Source: FFIEC HMDA Data Browser, 2024 LAR. Lender names: GLEIF. Built with DuckDB, scikit-learn, Plotly and Streamlit. "
+st.caption("Source: FFIEC HMDA Data Browser, 2024 LAR (2023 for the year check). Lender names: GLEIF. Built with DuckDB, scikit-learn, Plotly and Streamlit. "
            "Descriptive analysis only; no claim about any lender's practices.")

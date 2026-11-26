@@ -51,12 +51,15 @@ with c_right:
         dict(label="Significantly worse than mix", value=int(S.sig_worse), decimals=0, color=store.ORANGE, sub=f"{int(S.sig_better)} significantly better"),
     ])
     st.markdown("**How robust is the frontier?**")
+    yr = store._csv("data/temporal_summary.csv").set_index("state").loc[ctx.state]
     rob = pd.DataFrame({
-        "Check": ["On raw and mix-adjusted", "Survive adding income", "Survive requiring 500+ applications", "Survive the ML adjustment"],
+        "Check": ["On raw and mix-adjusted", "Survive adding income", "Survive requiring 500+ applications", "Survive the ML adjustment", "On the 2023 frontier too"],
         "Kept": [f"{int(S.f_adj_and_raw)} of {int(S.f_adj)}", f"{int(S.f_adj_and_inc)} of {int(S.f_adj)}",
-                 f"{int(S.f_adj_and_500)} of {int(S.f_adj)}", f"{int(ML.f_ml_and_adj)} of {int(ML.f_adj)}"]})
+                 f"{int(S.f_adj_and_500)} of {int(S.f_adj)}", f"{int(ML.f_ml_and_adj)} of {int(ML.f_adj)}",
+                 f"{int(yr.frontier_both)} of {int(yr.frontier_2024)}"]})
     st.dataframe(rob, hide_index=True, width="stretch")
-    st.caption("Lenders that stay on the frontier under every view are the most credible. Raw rates mislead because refinance-heavy lenders naturally lose more applicants.")
+    st.caption("Lenders that stay on the frontier under every view are the most credible. Raw rates mislead because refinance-heavy lenders naturally lose more applicants. "
+               "Membership changes a lot between years (see <i>Six-state check</i>), so treat the frontier as a shortlist.", unsafe_allow_html=True)
 
 # ---------------------------------------------------------------- lender card
 st.subheader("Inspect a lender")

@@ -27,13 +27,18 @@ Funded loans are 62.7%. Applicant exit is the larger loss.
 Raw walk-away rankings mislead, because refinance-heavy lenders lose more applicants everywhere. I compared each lender with what
 its own loan mix predicts (observed ÷ expected). 36 of 111 lenders lose significantly more applicants than their mix predicts; 44
 significantly fewer. On the walk-away-versus-denial frontier, only 4 of 7 lenders are on both the raw and the mix-adjusted frontier,
-and 5 of 7 survive adding income to the adjustment. The best lenders do not charge more (median rate spread 0.18 vs 0.16 points).
+and 5 of 7 survive adding income to the adjustment. Lenders on the 2024 frontier do not show clearly higher prices (median rate spread 0.18 vs 0.16 points).
 
 **Does it generalise, and can a model explain it?** The direct-refinance leak replicates in Virginia, Pennsylvania, Delaware, D.C. and West
 Virginia (direct refinances close incomplete at 9.3–12.2%, brokered 3.3–6.1%, direct purchases 1.5–1.8%; 63–75% of all stalled files). A gradient-boosted
 model on 13 application-time fields predicts walk-away barely better than loan purpose and type alone (AUC about 0.6), and does not shrink the real
 spread between lenders (τ about 0.4). These fields do not explain why people leave or why lenders differ. Unfinished files are more predictable: a model trained on
 Maryland scores the other five states with AUC 0.73–0.78 (a purpose × channel table gets 0.71–0.75).
+
+**Does it hold a year earlier?** The same gaps appear in 2023: direct refinances closed incomplete at 10.7–14.3% in the six states, brokered
+ones at 2.1–5.0%. Lender flags mostly lasted: of 128 "significantly worse" flags from 2023 that could be followed, 116 were still above expected in 2024
+and 103 still significant (13 more could not be followed). The frontier did not last as well: only 3 of Maryland's 7 frontier lenders in 2024 were on it
+in 2023. **Use the flags to choose whom to investigate; do not name best-in-class lenders from one year.**
 
 ## 4. Why this intervention (and not the alternatives)
 
@@ -56,6 +61,8 @@ Maryland scores the other five states with AUC 0.73–0.78 (a purpose × channel
 - **Population:** new direct refinance and cash-out applications; randomise 50/50 at application level, stratified by purpose and loan type.
 - **Primary metric:** share of files closed incomplete (baseline 12.2%, target 9.2%): about **1,670 files per arm** (80% power, α = 5%).
   Funded rate (40.9% → 43.4%) is a pre-registered secondary readout and would need about 6,120 per arm.
+- **Why a concurrent control matters:** Maryland's direct-refinance incomplete rate fell from 13.4% to 12.2% between 2023 and 2024 without this test.
+  A before-and-after comparison could credit the assistant with a change it did not cause.
 - **Later, not in this test:** a risk score for unfinished files could decide who gets the human call first, only after a fair-lending review and evidence that high-risk applicants benefit.
 - **Guardrails:** denial-rate *mix* (denials may rise mechanically as more files reach underwriting), cost per file, complaints, time to decision, treatment parity.
 - **Ship if:** incomplete rate falls ≥ 2 points, funded rate does not fall, and guardrails hold. **Stop if** cost per recovered loan exceeds contribution per loan.
@@ -64,13 +71,13 @@ Maryland scores the other five states with AUC 0.73–0.78 (a purpose × channel
 
 - Brokers pre-screen applicants, so the direct-versus-broker gap overstates what a product can recover.
 - HMDA has no credit score, no timestamps and no reason for withdrawal; the test should capture *why* files stall.
-- Six neighbouring states and one year. The leak replicates, but the states share regulators and lenders; confirm on a distant region before sizing nationally.
+- Six neighbouring states and two adjacent years. The leak replicates, but the states share regulators and lenders; confirm on a distant region before sizing nationally.
 - Fair lending: the intervention must be offered identically to all applicants and must not alter underwriting; monitor outcomes by protected class under the lender's compliance process (not analysed here).
 
 ## 8. Next steps
 
 1. Instrument the stall: log which document and which step each stalled file waits on (2 weeks).
 2. Run the test described above (about 8 weeks at 400 eligible applications a week).
-3. Re-run the lender comparison on 2023 and 2025 HMDA to see whether the frontier is stable, and rebuild the walk-away model on the lender's own data (credit score, timestamps) to see how much more predictable it is.
+3. Repeat the year check on a period with a very different rate environment, and rebuild the walk-away model on the lender's own data (credit score, timestamps) to see how much more predictable it is.
 
 *Descriptive analysis of public HMDA data; makes no claim about any lender's practices. Interactive version: `streamlit run app.py`.*

@@ -132,7 +132,7 @@ ui.callout(f"{meaning} Model AUC {t.auc_model.min():.2f}–{t.auc_model.max():.2
 if target == "Closed incomplete":
     ui.callout("<b>What this allows, and what it does not.</b> A score like this could later decide who gets the costly human call first. Before that it needs a fair-lending review "
                "and a test showing that high-risk applicants actually benefit: high risk does not mean a call will help. The first A/B test should still include every eligible applicant. "
-               "All data is 2024 from neighbouring states that share many lenders, so other years are untested.", "warn")
+               "This test uses 2024 only, in neighbouring states that share many lenders. The year check below tests 2023 → 2024.", "warn")
 
 st.markdown("**Do lenders behave the same way in different states?**")
 p1, p2 = st.columns([1.35, 1])
@@ -153,6 +153,75 @@ with p1:
     fig.update_yaxes(title=f"Walk-away O/E in {store.STATES[other]}")
     st.plotly_chart(ui.style(fig, 340, legend=False), width="stretch", config={"displayModeBar": False}, key="st_persist_chart",
                     alt="Each shared lender's walk-away O/E in Maryland against another state")
+
+# ---------------------------------------------------------------- one year later
+st.subheader("Does it still hold a year later?")
+st.write("The same cleaning rules and definitions were applied to **2023** data. For the model check, each state's 2023 applications train a model that "
+         "scores its 2024 applications (income and county left out, as above).")
+YH = store._csv("data/temporal_headlines.csv")
+YM = store._csv("data/temporal_metrics.csv")
+YS = store._csv("data/temporal_summary.csv").set_index("state")
+YL = store._csv("data/temporal_lenders.csv")
+h23, h24 = (YH[YH.year == y].set_index("state").loc[order] for y in (2023, 2024))
+fig = go.Figure()
+for col, frame, name, color in [("dir_refi_inc_pct", h23, "Direct refi 2023", "#9A6A3A"), ("dir_refi_inc_pct", h24, "Direct refi 2024", store.AMBER),
+                                ("ind_refi_inc_pct", h23, "Broker refi 2023", "#2F6F68"), ("ind_refi_inc_pct", h24, "Broker refi 2024", store.TEAL)]:
+    fig.add_bar(x=order, y=frame[col], name=name, marker_color=color, text=[f"{v:.1f}" for v in frame[col]], textposition="outside")
+fig.update_layout(barmode="group", bargap=0.25)
+fig.update_yaxes(title="Files closed incomplete", ticksuffix="%", range=[0, 17])
+st.plotly_chart(ui.style(fig, 340), width="stretch", config={"displayModeBar": False}, key="st_year_leak",
+                alt="Direct and brokered refinance incomplete rates in 2023 and 2024 in six states")
+fall = h23.dir_refi_inc_pct - h24.dir_refi_inc_pct
+ui.callout(f"<b>The gap was already there in 2023.</b> Direct refinances closed incomplete at {h23.dir_refi_inc_pct.min():.1f}–{h23.dir_refi_inc_pct.max():.1f}%, "
+           f"against {h23.ind_refi_inc_pct.min():.1f}–{h23.ind_refi_inc_pct.max():.1f}% through brokers, and walk-aways exceeded denials in "
+           f"{int((h23.walk_pct > h23.den_pct).sum())} of 6 states.", "good")
+ui.callout(f"<b>The rate also moves without any test.</b> From 2023 to 2024 the direct-refinance rate fell in {int((fall > 0).sum())} of 6 states, by "
+           f"{fall.min():.1f}–{fall.max():.1f} points. A before-and-after comparison could credit a new feature with a change it did not cause, "
+           "so the A/B test needs a control group running at the same time.", "warn")
+
+year_target = st.segmented_control("Model trained on 2023, predicting in 2024", ["Closed incomplete", "Any walk-away", "Denial"],
+                                   default="Closed incomplete", required=True, key="st_year_target")
+ym = YM[YM.target == year_target].set_index("state").loc[order].reset_index()
+st.dataframe(pd.DataFrame({"State": ym.state, "AUC: lookup table": ym.auc_table, "AUC: model": ym.auc_model,
+                           "Top 20% reach, table %": 100 * ym.top20_table, "Top 20% reach, model %": 100 * ym.top20_model,
+                           "Predicted ÷ observed": ym.pred_over_obs}), hide_index=True, width="stretch",
+             column_config={"AUC: lookup table": st.column_config.NumberColumn(format="%.2f"), "AUC: model": st.column_config.NumberColumn(format="%.2f"),
+                            "Top 20% reach, table %": st.column_config.NumberColumn(format="%.0f"), "Top 20% reach, model %": st.column_config.NumberColumn(format="%.0f"),
+                            "Predicted ÷ observed": st.column_config.NumberColumn(format="%.2f")})
+st.caption(f"Model AUC {ym.auc_model.min():.2f}–{ym.auc_model.max():.2f} against {ym.auc_table.min():.2f}–{ym.auc_table.max():.2f} for the table. "
+           f"The model has the higher AUC in {int((ym.auc_model > ym.auc_table).sum())} of 6 states and reaches more cases in its top 20% in "
+           f"{int((ym.top20_model > ym.top20_table).sum())} of 6. Predicted totals run from {ym.pred_over_obs.min():.2f}× to {ym.pred_over_obs.max():.2f}× the real count.")
+
+st.markdown(f"**Do lender results in {ctx.name} hold from one year to the next?**")
+y1, y2 = st.columns([1.35, 1])
+yr = YS.loc[ctx.state]
+with y1:
+    both = YL[YL.state == ctx.state].merge(ctx.lenders[["lei", "name"]], on="lei")
+    top = float(max(both.wa_oe_2023.max(), both.wa_oe_2024.max()) * 1.05)
+    fig = go.Figure(go.Scatter(x=[0, top], y=[0, top], mode="lines", line=dict(color="rgba(255,255,255,.3)", dash="dot"), hoverinfo="skip"))
+    fig.add_trace(go.Scatter(x=both.wa_oe_2023, y=both.wa_oe_2024, mode="markers", customdata=both.name,
+                             marker=dict(size=9, color=np.where(both.wa_z_2023 > 1.96, store.ORANGE, "#6EA8FF"), opacity=0.85, line=dict(width=0.5, color="#0B1020")),
+                             hovertemplate="<b>%{customdata}</b><br>2023 O/E %{x:.2f}<br>2024 O/E %{y:.2f}<extra></extra>"))
+    fig.add_hline(y=1, line=dict(color="rgba(255,255,255,.2)", width=1)); fig.add_vline(x=1, line=dict(color="rgba(255,255,255,.2)", width=1))
+    fig.update_xaxes(title="Walk-away O/E in 2023")
+    fig.update_yaxes(title="Walk-away O/E in 2024")
+    st.plotly_chart(ui.style(fig, 360, legend=False), width="stretch", config={"displayModeBar": False}, key="st_year_lenders",
+                    alt="Each lender's walk-away O/E in 2023 against 2024; orange marks lenders flagged as significantly worse in 2023")
+    st.caption("Orange = significantly more walk-aways than its mix predicted in 2023.")
+with y2:
+    st.metric("Walk-away O/E rank correlation, 2023 vs 2024", f"{yr.rho_walkaway:.2f}", help="1.00 = identical ranking in both years")
+    lost = int(yr.flagged_2023_all - yr.flagged_2023)
+    st.caption(f"{int(yr.shared_lenders)} lenders have 200+ applications in both years. Of {int(yr.flagged_2023)} flagged as worse in 2023, "
+               f"{int(yr.flagged_still_above_1)} were still above expected in 2024 and {int(yr.flagged_still_significant)} were still significantly worse."
+               + (f" Another {lost} flagged lenders could not be followed (under 200 applications in 2024)." if lost else ""))
+    st.metric("2024 frontier lenders also on the 2023 frontier", f"{int(yr.frontier_both)} of {int(yr.frontier_2024)}")
+pooled = YS.sum(numeric_only=True)
+ui.callout(f"<b>Trust the flag more than the frontier.</b> Across all six states, {int(pooled.flagged_still_above_1)} of {int(pooled.flagged_2023)} "
+           f"followable 2023 flags were still above expected a year later, and {int(pooled.flagged_still_significant)} were still significant. "
+           f"The frontier is much less stable: only {int(pooled.frontier_both)} of {int(pooled.frontier_2024)} places on the 2024 state frontiers "
+           "belonged to a lender that was also on it in 2023. Do not name the best lenders from one year of data.", "info")
+st.caption("One pair of neighbouring years, in the same states. It does not show what happens under a very different rate environment. "
+           "Pricing, DTI, county and out-of-lender ML results were not re-run on 2023.")
 
 st.subheader("All numbers")
 T = S.join(M[["auc_ml_wa", "auc_ml_den", "tau_ml"]]).reset_index()

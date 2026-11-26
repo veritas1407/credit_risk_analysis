@@ -113,7 +113,7 @@
 
 **Interpretation:** The leak is a pattern, not a Maryland anecdote, which is what justifies a product test. Two checks are weaker: the DTI jump is only 1.99× in West Virginia (below the 2× rule of thumb used on the app's scoreboard), and West Virginia's broker rate rests on 394 applications.
 
-**Limitation:** Neighbouring states share regulators, markets and many lenders, so this is replication, not independence. One year of data. Scoreboard thresholds are rules of thumb, not formal tests.
+**Limitation:** Neighbouring states share regulators, markets and many lenders, so this is replication, not independence. This finding uses 2024; Finding 18 repeats the core numbers on 2023. Scoreboard thresholds are rules of thumb, not formal tests.
 
 
 ### Finding 14 — Walk-away in general is hard to predict from application data
@@ -149,4 +149,13 @@
 
 **Interpretation:** Ranking carries over better than exact rates, so any reuse needs recalibration. Unfinished files are moderately predictable, much of it from purpose and channel. This corrects the earlier advice not to score applicants, which rested on the walk-away model rather than the outcome the assistant targets. A score could later prioritise the costly human call, only after a fair-lending review and a test showing that high-risk applicants benefit. The first A/B test should include every eligible applicant. The lender result suggests something company-wide, which could be process or the customers a lender attracts.
 
-**Limitation:** All data is from 2024, and the states are neighbours that share many lenders, so this transfer is probably easier than one to another year or a distant market. Only one training state was used. Income is blank for about 20% of incomplete files against 6% of others; keeping or dropping the income fields changes incomplete-file AUC by no more than 0.006.
+**Limitation:** All data is from 2024, and the states are neighbours that share many lenders, so this transfer is probably easier than one to a distant market (Finding 18 tests another year). Only one training state was used. Income is blank for about 20% of incomplete files against 6% of others; keeping or dropping the income fields changes incomplete-file AUC by no more than 0.006.
+
+
+### Finding 18 — A year apart: what lasted from 2023 to 2024
+
+**Result:** The same cleaning rules and definitions were applied to 2023 (509,440 applications in the six states); the script first reproduces the published 2024 numbers, lender O/E and frontiers. **Headlines in 2023:** walk-aways exceeded denials in all six states (21.7–25.8% vs 10.2–13.3%). Direct refinances closed incomplete at 10.7–14.3%, brokered refinances at 2.1–5.0% and direct purchases at 1.6–2.3%; direct refinances were 62–73% of stalled files. The direct-refinance rate then fell in all six states, by 0.9–2.5 points. **Model (train on a state's 2023, score its 2024; no income or county):** for closed incomplete, AUC 0.71–0.77 against 0.73–0.74 for a purpose × channel table, with the model higher in five states and lower in D.C.; its top 20% reached 49–58% of incomplete files (table 48–58%), more than the table in five states. It over-predicted incomplete files in all six (1.03–1.21×). Any walk-away: AUC 0.58–0.65 (table 0.54–0.61). Denial: 0.70–0.73 (table 0.65–0.68), 0.72–0.77 with income. **Lenders:** walk-away O/E rank correlation between years was 0.72–0.80 in five states (0.43 in D.C., 7 shared lenders); denial 0.88–0.96. Of 128 followable lender-state flags for "significantly more walk-aways" in 2023, 116 (91%) were above expected in 2024 and 103 (80%) were still significant. Another 13 flagged lender-states had under 200 applications in 2024 and could not be followed. **Frontier:** only 14 of 31 places on the 2024 mix-adjusted state frontiers belonged to a lender also on that state's 2023 frontier (Maryland: 3 of 7).
+
+**Interpretation:** The main gaps and most lender flags lasted a year, so they are reasonable places to investigate. Frontier membership did not, so one year is not enough to name best-in-class lenders. This weakens any benchmark based only on the 2024 frontier. Because the incomplete rate moved on its own, an A/B test needs a concurrent control group; a before-and-after comparison could mislead. Rankings can be reused a year later, but predicted counts need recalibration.
+
+**Limitation:** Two adjacent years, the same states and many of the same lenders. It does not test a very different rate environment. A lasting flag may reflect a lender's customers as much as its process. Pricing, DTI, county, income-adjusted and out-of-lender ML results were not re-run on 2023.

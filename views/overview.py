@@ -16,7 +16,7 @@ ui.hero(
     f'Applicants walk away <span class="grad">{ratio:.1f}×</span> as often as lenders say no',
     f"{ctx.total:,} first-lien, owner-occupied home loan applications in {ctx.name}. Where do applicants leave, which lenders keep them, "
     "and what should a product team build? Switch state in the sidebar: every number re-computes.",
-    ["HMDA 2024", f"6 states · {all_apps:,} applications", "SQL · DuckDB", "gradient-boosted case-mix model", "A/B test design"],
+    ["HMDA 2024", f"6 states · {all_apps:,} applications", "checked against 2023", "SQL · DuckDB", "gradient-boosted case-mix model", "A/B test design"],
 )
 
 ui.kpis([

@@ -16,7 +16,7 @@ build_transfer.py: do the patterns carry over to data the model has never seen?
 Outputs: data/transfer_metrics.csv, data/lender_persistence.csv
 Run:     python build_transfer.py          (needs build_data.py to have run)
 
-Limits: all data is from 2024 and the states are neighbours that share many lenders. This says nothing about other years.
+Limits: all data is from 2024 and the states are neighbours that share many lenders. This test says nothing about other years (see build_temporal.py).
 """
 
 import itertools
